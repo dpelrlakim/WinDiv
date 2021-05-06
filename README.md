@@ -13,7 +13,7 @@ For example, if I wanted to move my browser window to the 3rd 1/5 of the screen,
 
 ## Notes
 - This application supports multi-display setups! If you have a 2nd monitor, simply drag the window so that more of its area is covered by that monitor. Then, using one of the hotkeys will automatically move it to the correct portion of that monitor.
-- This application will automatically hide the command line after receiving the input (number of monitor sections to make) from you. However, it doesn't change focus to a different window for you, so you need to click on the window to bring focus to it before you use one of the hotkeys. You can use 'ALT' + 'TAB' to bring focus to your most recent window to bypass using a mouse.
+- This application will automatically hide the command line after receiving the input (number of monitor sections to make) from you. However, it doesn't change focus to a different window for you, so you need to click on the window to bring focus to it before you use one of the hotkeys. You can use `ALT` + `TAB` to bring focus to your most recent window to bypass using a mouse.
 - You may find `CTRL` + `ALT` + `8` helpful if you don't want to drag the border of a window from the edge of the screen to make it smaller.
 
 Enjoy!

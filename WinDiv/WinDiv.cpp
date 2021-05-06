@@ -136,7 +136,7 @@ int main(int argc, TCHAR* argv[]) {
                     SWP_SHOWWINDOW);
 
             } else if (slot == 8) { // make a window the same size as of the original console window
-                SetWindowPos(cWnd, HWND_TOP, CORNER_BUFFER, CORNER_BUFFER, DEFAULT_CONSOLE_X, DEFAULT_CONSOLE_Y, SWP_SHOWWINDOW);
+                SetWindowPos(topMostWindow, HWND_TOP, CORNER_BUFFER, CORNER_BUFFER, DEFAULT_CONSOLE_X, DEFAULT_CONSOLE_Y, SWP_SHOWWINDOW);
             } else if (slot == 9) { // ask user again for new 'slices' value
                 ShowWindow(cWnd, 1);
                 SetForegroundWindow(cWnd);

@@ -91,6 +91,7 @@ int main(int argc, TCHAR* argv[]) {
     ShowWindow(cWnd, 1);       // show console
     int slot;                  // the windows get moved to (slot / slices) portion of the screen
     int slices = setSlices(0); // set the hotkey CTRL + ALT + [1...slices] (user input)
+    setInterface(8);
     setInterface(9);
     setInterface(0);
     ShowWindow(cWnd, 0);       // hide console
@@ -134,6 +135,8 @@ int main(int argc, TCHAR* argv[]) {
                     mon.height() + ptBorder.y,
                     SWP_SHOWWINDOW);
 
+            } else if (slot == 8) { // make a window the same size as of the original console window
+                SetWindowPos(cWnd, HWND_TOP, CORNER_BUFFER, CORNER_BUFFER, DEFAULT_CONSOLE_X, DEFAULT_CONSOLE_Y, SWP_SHOWWINDOW);
             } else if (slot == 9) { // ask user again for new 'slices' value
                 ShowWindow(cWnd, 1);
                 SetForegroundWindow(cWnd);

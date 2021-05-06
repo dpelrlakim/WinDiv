@@ -10,8 +10,8 @@ struct RECT_EXT : public RECT {
     RECT rec;
 
     RECT_EXT() : rec{ RECT() } {}
-    RECT_EXT(RECT& r) : rec{ RECT(r) } {}
-    RECT_EXT operator=(RECT& r) {
+    RECT_EXT(RECT &r) : rec{ RECT(r) } {}
+    RECT_EXT operator=(RECT &r) {
         right = r.right;
         left = r.left;
         bottom = r.bottom;

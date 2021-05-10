@@ -1,5 +1,5 @@
 # WinDiv
-WinDiv allows you to use hotkeys to move & resize any window to an equally divided section of the monitor (similar to `Windows` + `L`). 
+WinDiv allows you to use hotkeys to move & resize any window to an equally divided section of the monitor (similar to `Windows` + `Arrow Keys`). 
 
 ## How to use this program
 First, select the number of pieces to divide your screen into. Input the number into the command line and press enter. Let's call this number n. You can choose any n-value from 2 to 5. <br/>

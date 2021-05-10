@@ -1,10 +1,7 @@
-//#pragma once ???
 #include <Windows.h>
 
 #ifndef _RECT_EXT
 #define _RECT_EXT
-
-using namespace std;
 
 struct RECT_EXT : public RECT {
     RECT rec;

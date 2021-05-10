@@ -1,6 +1,11 @@
+#ifndef UNICODE
+#define UNICODE
+#endif
+
 #include <windows.h>
 #include <iostream>
 #include "RECT_Ext.h"
+#include "MY_UI.h"
 
 // Hotkeys: CTRL + ALT + ...
 //    0    -->  exit
@@ -11,7 +16,12 @@
 // NOTE: the int variable named "id" used in this code is meant to be one of [0...9] to go well with the ASCII digit chars.
 //   --> For any other numbers or chars, functionality may change.
 
-using namespace std;
+using std::cout;
+using std::cin;
+using std::endl;
+using std::string;
+
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 const string HOTKEY = "Hotkey 'CTRL + ALT + ";
 const string REG = "' registered.\n";
@@ -78,29 +88,92 @@ RECT_EXT detectAndScale(RECT_EXT mon) {
     return ret;
 }
 
-int main(int argc, TCHAR* argv[]) {
-    HWND cWnd = GetConsoleWindow(); // console window
-    HWND topMostWindow = GetForegroundWindow();
+// creates the UI window, makes it visible and places it at an appropriate location.
+HWND initialize(HINSTANCE &hInstance, int nCmdShow, RECT_EXT *UIRect) {
+
+    const wchar_t CLASS_NAME[] = L"WinDiv Class";
+
+    WNDCLASS wc = { };
+
+    wc.lpfnWndProc = WindowProc;   // ptr to the WindowProc function
+    wc.hInstance = hInstance;      // handle to application instance (created & passed by this wWinMain)
+    wc.lpszClassName = CLASS_NAME; // name of class
+
+    RegisterClass(&wc);
+
+    // Create the window.
+    HWND UIWin = CreateWindowEx(
+        0,                              // Optional window styles.
+        CLASS_NAME,                     // Window class
+        L"WinDiv",                      // Window text
+        WS_OVERLAPPEDWINDOW,            // Window style
+        // Position and Size
+        CORNER_BUFFER, CORNER_BUFFER, 400, 600,
+        NULL,       // Parent window    
+        NULL,       // Menu
+        hInstance,  // Instance handle
+        NULL        // Additional application data
+    );
+    if (UIWin == NULL) return 0;
+
+    ShowWindow(UIWin, nCmdShow);
+    int UIX, UIY, UIT, UIB;
+    if (GetWindowRect(UIWin, UIRect)) {
+        UIX = UIRect->left;
+        UIY = UIRect->right;
+        UIT = UIRect->top;
+        UIB = UIRect->bottom;
+    }
+    return UIWin;
+}
+
+HWND createButton(HINSTANCE &hInstance, HWND &parent, RECT_EXT &btnDimensions) {
+    HWND bt1 = CreateWindowEx(
+        0,
+        L"BUTTON",
+        L"Move Right",
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+        // Size and position
+        btnDimensions.left, btnDimensions.bottom, btnDimensions.width(), btnDimensions.height(),
+        parent,       // Parent window    
+        NULL,         // Menu
+        (HINSTANCE)GetWindowLongPtr(parent, GWLP_HINSTANCE),
+        NULL
+    );
+    return bt1;
+}
+
+int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ PWSTR pCmdLine, _In_ int nCmdShow) {
+    // __________
+    // 
+    // get monitor info first. Then create a UI window of appropriate size
+    // (ex: If      bigger than X, then 15% of screen, 
+    //      else if smaller than Y, then 60% of screen. 
+    //      else    Otherwise a constant c)
+    HWND topMostWindow = GetForegroundWindow(); // use this to get monitor handle
     RECT_EXT mon; // RECT structure of nearest monitor
+    RECT_EXT UIRect;
 
     detectAndScale(mon);
 
-    // set console window to reasonable location & size in case it gets changed by one of the hotkeys
-    SetWindowPos(cWnd, HWND_TOP, CORNER_BUFFER, CORNER_BUFFER, DEFAULT_CONSOLE_X, DEFAULT_CONSOLE_Y, SWP_SHOWWINDOW);
+    HWND UIWin = initialize(hInstance, nCmdShow, &UIRect);
+    HWND bt1 = createButton(hInstance, UIWin, UIRect);
 
-    ShowWindow(cWnd, 1);       // show console
+    // __________
+
     int slot;                  // the windows get moved to (slot / slices) portion of the screen
     int slices = setSlices(0); // set the hotkey CTRL + ALT + [1...slices] (user input)
     setInterface(8);
     setInterface(9);
     setInterface(0);
-    ShowWindow(cWnd, 0);       // hide console
 
-    MSG msg;                   // used to receive ID of hotkey
+    MSG msg;                   // store user input here
     RECT_EXT cliRect, winRect; // cliRect --> without invisible borders   // winRect --> including invisible borders
     POINT ptBorder;            // ptBorder.x --> width of side borders    // ptBorder.y --> width of bottom border
 
     while (GetMessage(&msg, NULL, 0, 0) != 0) {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
         if (msg.message == WM_HOTKEY)
         {
             slot = msg.wParam;
@@ -153,4 +226,30 @@ int main(int argc, TCHAR* argv[]) {
     unRegAndMsg(9);
 
     return 0;
+}
+
+
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    switch (uMsg)
+    {
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        return 0;
+
+    case WM_PAINT:
+    {
+        PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(hwnd, &ps);
+
+
+
+        FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
+
+        EndPaint(hwnd, &ps);
+    }
+    return 0;
+
+    }
+    return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }

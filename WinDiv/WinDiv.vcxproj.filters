@@ -15,12 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WinDiv.cpp">
+    <ClCompile Include="WinDiv_GUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RECT_EXT.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MY_UI.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

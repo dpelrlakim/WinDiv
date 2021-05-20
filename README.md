@@ -7,7 +7,7 @@ Then, click on a window you want to reposition/resize and use the hotkey `CTRL` 
 For example, if I wanted to move my browser window to the 3rd 1/5 of the screen, I would input 5 in the beginning, then use the hotkey `CTRL` + `ALT` + `3`.
 
 ## Extra functions
-- `CTRL` + `ALT` + `8` is a quick & dirty way to make a window smaller (same size as the command line window when program is started)
+- `CTRL` + `ALT` + `8` is a quick & dirty way to make a window smaller
 - `CTRL` + `ALT` + `9` to re-select n-value
 - `CTRL` + `ALT` + `0` to exit
 
